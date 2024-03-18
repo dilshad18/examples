@@ -5,6 +5,7 @@ metadata:
   name: nfs-sc-pvc
   namespace: default
 spec:
+  storageClassName: openebs-nfs
   accessModes:
     - ReadWriteOnce
   resources:
