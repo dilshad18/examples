@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: default-sc-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-default-sc-pvc
+  namespace: default
+spec:
+  volumes:
+    - name: volume
+      persistentVolumeClaim:
+        claimName: default-sc-pvc
+  containers:
+    - name: utho
+      image: nginx
+      command:
+        - "/bin/sh"
+        - "-c"
+        - >
+          while true;
+          do
+            echo "$(date): Hello, World!" >> /data/myfile.txt && cat /data/myfile.txt;
+            sleep 5;
+          done
+      volumeMounts:
+        - mountPath: /data
+          name: volume
