@@ -1,10 +1,12 @@
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: default-sc-pvc
+  name: hostpath-sc-pvc
   namespace: default
 spec:
+  storageClassName: openebs-hostpath
   accessModes:
     - ReadWriteOnce
   resources:
@@ -14,7 +16,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-with-default-sc-pvc
+  name: deployment-with-hostpath-sc-pvc
   namespace: default
 spec:
   replicas: 1  # Adjust the number of replicas as needed
@@ -29,7 +31,7 @@ spec:
       volumes:
         - name: volume
           persistentVolumeClaim:
-            claimName: default-sc-pvc
+            claimName: hostpath-sc-pvc
       containers:
         - name: utho
           image: nginx
